@@ -1,0 +1,75 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python data_ingestion.py
+    deps:
+    - path: data_ingestion.py
+      hash: md5
+      md5: cf45da008fab0c2d5e16485e631285be
+      size: 864
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.1
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: baa43b70a6a4c8dac10639c6b987a43a.dir
+      size: 827973
+      nfiles: 2
+  data_preprocessing:
+    cmd: python data_preprocessing.py
+    deps:
+    - path: data_preprocessing.py
+      hash: md5
+      md5: bc247dfa70b08fe250ff856adb36ff4a
+      size: 2431
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 942323efba911a42bc5b18b3e6c76c13.dir
+      size: 622285
+      nfiles: 2
+  feature_engineering:
+    cmd: python feature_engineering.py
+    deps:
+    - path: feature_engineering.py
+      hash: md5
+      md5: 3daa0c5a04b5f8bf05df989303b2dc01
+      size: 1341
+    params:
+      params.yaml:
+        feature_engineering.max_features: 50
+    outs:
+    - path: data/features
+      hash: md5
+      md5: 3c3e10ec778b89b254e22a0cfc8fb378.dir
+      size: 1118468
+      nfiles: 2
+  model_building:
+    cmd: python model_building.py
+    deps:
+    - path: model_building.py
+      hash: md5
+      md5: 4407bcc315c3be543b33493c48569b8f
+      size: 707
+    params:
+      params.yaml:
+        model_building.learning_rate: 0.1
+        model_building.n_estimators: 50
+    outs:
+    - path: model.pkl
+      hash: md5
+      md5: 7003a9fd05b507561d5b8c5cbba60a0a
+      size: 72473
+  model_evaluation:
+    cmd: python model_evaluation.py
+    deps:
+    - path: model_evaluation.py
+      hash: md5
+      md5: 08b695ef34369042ef7b9deb2182713d
+      size: 855
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: 2ef5e974e271346c80ed5387820a9286
+      size: 146
